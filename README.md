@@ -23,11 +23,21 @@ function onDeviceReady() {
   mockchecker.check(successCallback, errorCallback);
 }
 
-function successCallback(result) {
-  console.log(result); // true - enabled, false - disabled
+function successCallback(mockStatus) {
+  console.log(mockStatus);
 }
 
 function errorCallback(error) {
   console.log(error);
 }
 ```
+
+## mockStatus
+
+Contains mock status :
+
+### properties
+
+- isMock : (boolean) true if device mock, false if no mock behavior detected.
+- messages : (string) this properties exists if isMock properties values is true. 
+
