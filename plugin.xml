@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
+        id="cordova-plugin-mockchecker"
+        version="1.0.0">
+
+  <name>MockGpsChecker</name>
+  <description>Detect GPS Spoofing in Android Platform.</description>
+
+  <js-module src="www/mockgps.js" name="MockChecker">
+	  <clobbers target="mockchecker" />
+  </js-module>
+
+  <platform name="android">
+    <config-file target="res/xml/config.xml" parent="/*">
+		<feature name="MockChecker">
+			<param name="android-package" value="bosowa.hris.cordova.MockChecker"/>
+		</feature>
+    </config-file>
+
+    <!--
+    <framework src="com.google.android.gms:play-services-location:11.4.2" />
+    -->
+    <!-- <framework src="com.google.android.gms:play-services-location:9.8.0" /> -->
+    <framework src="com.google.android.gms:play-services-location:15.0.1" />
+
+  	<config-file target="AndroidManifest.xml" parent="/*">
+      <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+      <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  	</config-file>
+
+    <source-file src="src/android/MockGpsChecker.java" target-dir="src/bosowa/hris/cordova"/>
+
+  </platform>
+
+</plugin>

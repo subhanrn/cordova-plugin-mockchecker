@@ -1,0 +1,31 @@
+{
+  "name": "cordova-plugin-mockchecker",
+  "version": "1.0.0",
+  "description": "Cordova Gps Spoofing Checker Plugin",
+  "cordova": {
+    "id": "cordova-plugin-mockchecker",
+    "platforms": "android"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [
+    "ecosystem:cordova",
+    "cordova-android",
+    "mock",
+    "location",
+    "checker",
+    "mock-location"
+  ],
+  "author": "Arham Anwar",
+  "license": "Apache-2.0",
+  "engines": {
+    "cordovaDependencies": {
+      "1.0.0": {
+        "cordova-android": ">7.0.0",
+        "cordova-ios": ">4.5.0"
+      }
+    }
+  }
+}
