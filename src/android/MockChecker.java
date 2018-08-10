@@ -14,13 +14,13 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class MockGpsChecker extends CordovaPlugin{
+public class MockChecker extends CordovaPlugin{
 
     private int MY_PERMISSIONS_REQUEST = 0;
 
     private JSONArray arrayGPS = new JSONArray();
     private JSONObject objGPS = new JSONObject();
-    private com.sandata.MockGpsChecker mContext;
+    private com.sandata.MockChecker mContext;
 
     @Override
     public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
@@ -32,7 +32,7 @@ public class MockGpsChecker extends CordovaPlugin{
                     objGPS.put("isMock",false);
                 }else{
                     objGPS.put("isMock",true);
-                    objGPS.put("messages","Please turn off Allow Mock locations option in developer options.")
+                    objGPS.put("messages","Please turn off Allow Mock locations option in developer options.");
                 }
 
             }

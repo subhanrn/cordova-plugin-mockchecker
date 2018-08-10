@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://gitlab.com/arham.anwar/cordova-plugin-mockchecker.git"
   },
   "keywords": [
     "ecosystem:cordova",
