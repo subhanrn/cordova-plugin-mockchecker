@@ -20,7 +20,7 @@ public class MockChecker extends CordovaPlugin{
 
     private JSONArray arrayGPS = new JSONArray();
     private JSONObject objGPS = new JSONObject();
-    private com.sandata.MockChecker mContext;
+    private bosowa.hris.cordova.MockChecker mContext;
 
     @Override
     public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
