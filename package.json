@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-mockchecker",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Cordova Gps Spoofing Checker Plugin",
   "cordova": {
     "id": "cordova-plugin-mockchecker",
