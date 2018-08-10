@@ -28,7 +28,7 @@
       <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   	</config-file>
 
-    <source-file src="src/android/MockGpsChecker.java" target-dir="src/bosowa/hris/cordova"/>
+    <source-file src="src/android/MockChecker.java" target-dir="src/bosowa/hris/cordova"/>
 
   </platform>
 
