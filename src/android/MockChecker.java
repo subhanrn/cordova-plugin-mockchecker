@@ -87,14 +87,10 @@ public class MockChecker extends CordovaPlugin {
   }
 
   public static boolean isDebugging(Context context) {
-    int devOptions = Settings.Secure.getInt(context.getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED,
-        0);
-    if (devOptions == 1) {
+    int devOptions = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.ADB_ENABLED, 0);
+    if (devOptions == 1)
       return true;
-    } else {
-      return false;
-    }
-
+    return false;
   }
 
 }
