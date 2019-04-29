@@ -5,7 +5,9 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.provider.Settings.Secure;
+import android.provider.Settings.Global;
 import android.util.Log;
+import android.location.Location;
 
 import org.apache.cordova.*;
 import org.json.JSONArray;
