@@ -53,7 +53,16 @@ public class MockChecker extends CordovaPlugin {
 
   public static boolean areThereMockPermissionApps(Context context, JSONArray data) {
     int count = 0;
-    List<String> whiteList = Arrays.asList(data.getJSONArray(0));
+    // List<String> whiteList = Arrays.asList(data.getJSONArray(0));
+
+    ArrayList<String> whiteList = new ArrayList<String>();
+    JSONArray jsonArray = data.getJSONArray(0);
+    if (jsonArray != null) {
+      int len = jsonArray.length();
+      for (int i = 0; i < len; i++) {
+        whiteList.add(jsonArray.get(i).toString());
+      }
+    }
 
     PackageManager pm = context.getPackageManager();
     List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
