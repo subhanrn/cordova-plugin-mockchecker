@@ -1,5 +1,5 @@
 module.exports = {
-  check: function (successCallback, errorCallback) {
-    cordova.exec(successCallback, errorCallback, 'MockChecker', 'check', []);
+  check: function (params, successCallback, errorCallback) {
+    cordova.exec(successCallback, errorCallback, 'MockChecker', 'check', [params]);
   }
-} 
+}
