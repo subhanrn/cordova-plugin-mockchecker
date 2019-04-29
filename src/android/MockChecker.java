@@ -53,7 +53,16 @@ public class MockChecker extends CordovaPlugin {
 
   public static boolean areThereMockPermissionApps(Context context, JSONArray data) {
     int count = 0;
-    List<String> whiteList = Arrays.asList(data.getJSONArray(0));
+    // List<String> whiteList = Arrays.asList(data.getJSONArray(0));
+
+    ArrayList<String> whiteList = new ArrayList<String>();
+    JSONArray jsonArray = data.getJSONArray(0);
+    if (jsonArray != null) {
+      int len = jsonArray.length();
+      for (int i = 0; i < len; i++) {
+        whiteList.add(jsonArray.get(i).toString());
+      }
+    }
 
     PackageManager pm = context.getPackageManager();
     List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
@@ -71,7 +80,7 @@ public class MockChecker extends CordovaPlugin {
             if (!((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
               if (requestedPermissions[i].equals("android.permission.ACCESS_MOCK_LOCATION")
                   && !applicationInfo.packageName.equals(context.getPackageName())
-                  && containsName(whiteList, applicationInfo.packageName)) {
+                  && containsName(whiteList, "com.yy.hiyo")) {
                 count++;
               }
             }
@@ -87,7 +96,7 @@ public class MockChecker extends CordovaPlugin {
     return false;
   }
 
-  public static boolean containsName(final List<String> list, final String name) {
+  public static boolean containsName(final ArrayList<String> list, final String name) {
     return list.stream().filter(o -> o.getName().equals(name)).findFirst().isPresent();
   }
 

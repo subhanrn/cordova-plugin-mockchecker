@@ -1,5 +1,7 @@
 # cordova-plugin-mockchecker
 
+forked from https://gitlab.com/arham.anwar/cordova-plugin-mockchecker
+
 This is a cordova plugin to avoid mock locations
 
 This plugin get mock location in Android api <= 22 AND api > 22
