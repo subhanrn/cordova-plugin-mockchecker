@@ -40,8 +40,7 @@ public class MockChecker extends CordovaPlugin {
       } else {
         objGPS.put("isMock", isDebugging(mContext.cordova.getActivity()));
         if (objGPS.getBoolean("isMock")) {
-          objGPS.put("messages",
-              "We've detected that there are other apps in the device, which are using Mock Location access (Location Spoofing Apps). Please uninstall first.");
+          objGPS.put("messages", "Please turn off android developer options");
         }
       }
       Log.i("Location", "isMock: " + objGPS.get("isMock"));
@@ -90,9 +89,12 @@ public class MockChecker extends CordovaPlugin {
   public static boolean isDebugging(Context context) {
     int devOptions = Settings.Secure.getInt(context.getContentResolver(), Settings.Global.DEVELOPMENT_SETTINGS_ENABLED,
         0);
-    if (devOptions == 1)
+    if (devOptions == 1) {
       return true;
-    return false;
+    } else {
+      return false;
+    }
+
   }
 
 }
