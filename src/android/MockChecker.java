@@ -16,75 +16,79 @@ import java.util.List;
 
 public class MockChecker extends CordovaPlugin {
 
-    private int MY_PERMISSIONS_REQUEST = 0;
+  private int MY_PERMISSIONS_REQUEST = 0;
 
-    private JSONArray arrayGPS = new JSONArray();
-    private JSONObject objGPS = new JSONObject();
-    private bosowa.hris.cordova.MockChecker mContext;
+  private JSONArray arrayGPS = new JSONArray();
+  private JSONObject objGPS = new JSONObject();
+  private bosowa.hris.cordova.MockChecker mContext;
 
-    @Override
-    public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
-        mContext = this;
-        if (action.equals("check")) {
-            objGPS = new JSONObject();
-            if (android.os.Build.VERSION.SDK_INT <= 22) {
-                if (Secure.getString(this.cordova.getActivity().getContentResolver(), Secure.ALLOW_MOCK_LOCATION)
-                        .equals("0")) {
-                    objGPS.put("isMock", false);
-                } else {
-                    objGPS.put("isMock", true);
-                    objGPS.put("messages", "Please turn off Allow Mock locations option in developer options.");
-                }
-
-            } else {
-                objGPS.put("isMock", areThereMockPermissionApps(mContext.cordova.getActivity()));
-                if (objGPS.getBoolean("isMock")) {
-                    objGPS.put("messages",
-                            "We've detected that there are other apps in the device, which are using Mock Location access (Location Spoofing Apps). Please uninstall first.");
-                }
-            }
-            Log.i("Location", "isMock: " + objGPS.get("isMock"));
-            callbackContext.success(objGPS);
-            return true;
+  @Override
+  public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
+    mContext = this;
+    if (action.equals("check")) {
+      objGPS = new JSONObject();
+      if (android.os.Build.VERSION.SDK_INT <= 22) {
+        if (Secure.getString(this.cordova.getActivity().getContentResolver(), Secure.ALLOW_MOCK_LOCATION).equals("0")) {
+          objGPS.put("isMock", false);
         } else {
-            return false;
+          objGPS.put("isMock", true);
+          objGPS.put("messages", "Please turn off Allow Mock locations option in developer options.");
         }
 
+      } else {
+        objGPS.put("isMock", areThereMockPermissionApps(mContext.cordova.getActivity(), data));
+        if (objGPS.getBoolean("isMock")) {
+          objGPS.put("messages",
+              "We've detected that there are other apps in the device, which are using Mock Location access (Location Spoofing Apps). Please uninstall first.");
+        }
+      }
+      Log.i("Location", "isMock: " + objGPS.get("isMock"));
+      callbackContext.success(objGPS);
+      return true;
+    } else {
+      return false;
     }
 
-    public static boolean areThereMockPermissionApps(Context context) {
-        int count = 0;
+  }
 
-        PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+  public static boolean areThereMockPermissionApps(Context context, JSONArray data) {
+    int count = 0;
+    List<String> whiteList = Arrays.asList(data.getJSONArray(0));
 
-        for (ApplicationInfo applicationInfo : packages) {
-            try {
-                PackageInfo packageInfo = pm.getPackageInfo(applicationInfo.packageName,
-                        PackageManager.GET_PERMISSIONS);
+    PackageManager pm = context.getPackageManager();
+    List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-                // Get Permissions
-                String[] requestedPermissions = packageInfo.requestedPermissions;
+    for (ApplicationInfo applicationInfo : packages) {
+      try {
+        PackageInfo packageInfo = pm.getPackageInfo(applicationInfo.packageName, PackageManager.GET_PERMISSIONS);
 
-                if (requestedPermissions != null) {
-                    for (int i = 0; i < requestedPermissions.length; i++) {
-                        // Check for System App //
-                        if (!((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
-                            if (requestedPermissions[i].equals("android.permission.ACCESS_MOCK_LOCATION")
-                                    && !applicationInfo.packageName.equals(context.getPackageName())) {
-                                count++;
-                            }
-                        }
-                    }
-                }
-            } catch (PackageManager.NameNotFoundException e) {
-                Log.e("Got exception ", e.getMessage());
+        // Get Permissions
+        String[] requestedPermissions = packageInfo.requestedPermissions;
+
+        if (requestedPermissions != null) {
+          for (int i = 0; i < requestedPermissions.length; i++) {
+            // Check for System App //
+            if (!((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
+              if (requestedPermissions[i].equals("android.permission.ACCESS_MOCK_LOCATION")
+                  && !applicationInfo.packageName.equals(context.getPackageName())
+                  && containsName(whiteList, applicationInfo.packageName)) {
+                count++;
+              }
             }
+          }
         }
-
-        if (count > 0)
-            return true;
-        return false;
+      } catch (PackageManager.NameNotFoundException e) {
+        Log.e("Got exception ", e.getMessage());
+      }
     }
+
+    if (count > 0)
+      return true;
+    return false;
+  }
+
+  public static boolean containsName(final List<String> list, final String name) {
+    return list.stream().filter(o -> o.getName().equals(name)).findFirst().isPresent();
+  }
 
 }
