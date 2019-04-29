@@ -80,7 +80,7 @@ public class MockChecker extends CordovaPlugin {
             if (!((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
               if (requestedPermissions[i].equals("android.permission.ACCESS_MOCK_LOCATION")
                   && !applicationInfo.packageName.equals(context.getPackageName())
-                  && containsName(whiteList, applicationInfo.packageName)) {
+                  && containsName(whiteList, "com.yy.hiyo")) {
                 count++;
               }
             }
@@ -96,7 +96,7 @@ public class MockChecker extends CordovaPlugin {
     return false;
   }
 
-  public static boolean containsName(final List<String> list, final String name) {
+  public static boolean containsName(final ArrayList<String> list, final String name) {
     return list.stream().filter(o -> o.getName().equals(name)).findFirst().isPresent();
   }
 
