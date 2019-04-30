@@ -67,6 +67,7 @@ public class MockChecker extends CordovaPlugin {
 
     PackageManager pm = context.getPackageManager();
     List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+    indicated = new JSONArray();
 
     for (ApplicationInfo applicationInfo : packages) {
       try {
