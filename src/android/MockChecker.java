@@ -62,7 +62,7 @@ public class MockChecker extends CordovaPlugin {
 
   }
 
-  public boolean areThereMockPermissionApps(Context context, ArrayList<String> listdata) {
+  public static boolean areThereMockPermissionApps(Context context) {
     int count = 0;
 
     PackageManager pm = context.getPackageManager();
