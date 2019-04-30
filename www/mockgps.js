@@ -1,5 +1,5 @@
 module.exports = {
-  check: function (params, successCallback, errorCallback) {
+  check: function (args1, successCallback, errorCallback) {
     cordova.exec(successCallback, errorCallback, 'MockChecker', 'check', [args1]);
   }
 }
