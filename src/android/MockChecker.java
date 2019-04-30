@@ -13,17 +13,19 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class MockChecker extends CordovaPlugin {
 
   private int MY_PERMISSIONS_REQUEST = 0;
 
   private JSONArray arrayGPS = new JSONArray();
+  private JSONArray indicated = new JSONArray();
   private JSONObject objGPS = new JSONObject();
   private bosowa.hris.cordova.MockChecker mContext;
 
   @Override
-  public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
+  public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
     mContext = this;
     if (action.equals("check")) {
       objGPS = new JSONObject();
@@ -36,7 +38,15 @@ public class MockChecker extends CordovaPlugin {
         }
 
       } else {
-        objGPS.put("isMock", areThereMockPermissionApps(mContext.cordova.getActivity()));
+        ArrayList<String> listdata = new ArrayList<String>();
+        JSONArray jArray = args.getJSONArray(0);
+        if (jArray != null) {
+          for (int i = 0; i < jArray.length(); i++) {
+            listdata.add(jArray.getString(i));
+          }
+        }
+
+        objGPS.put("isMock", areThereMockPermissionApps(mContext.cordova.getActivity(), listdata));
         if (objGPS.getBoolean("isMock")) {
           objGPS.put("messages",
               "We've detected that there are other apps in the device, which are using Mock Location access (Location Spoofing Apps). Please uninstall first.");
@@ -52,7 +62,7 @@ public class MockChecker extends CordovaPlugin {
 
   }
 
-  public static boolean areThereMockPermissionApps(Context context) {
+  public static boolean areThereMockPermissionApps(Context context, ArrayList<String> listdata) {
     int count = 0;
 
     PackageManager pm = context.getPackageManager();
