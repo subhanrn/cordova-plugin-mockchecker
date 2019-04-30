@@ -13,6 +13,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
+import java.util.ArrayList;
 
 public class MockChecker extends CordovaPlugin {
 
@@ -23,7 +24,7 @@ public class MockChecker extends CordovaPlugin {
   private bosowa.hris.cordova.MockChecker mContext;
 
   @Override
-  public boolean execute(String action, JSONArray data, final CallbackContext callbackContext) throws JSONException {
+  public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
     mContext = this;
     if (action.equals("check")) {
       objGPS = new JSONObject();
@@ -36,9 +37,18 @@ public class MockChecker extends CordovaPlugin {
         }
 
       } else {
-        objGPS.put("isMock", isDebugging(mContext.cordova.getActivity()));
+        ArrayList<String> listdata = new ArrayList<String>();
+        JSONArray jArray = args.getJSONArray(0);
+        if (jArray != null) {
+          for (int i = 0; i < jArray.length(); i++) {
+            listdata.add(jArray.getString(i));
+          }
+        }
+
+        objGPS.put("isMock", areThereMockPermissionApps(mContext.cordova.getActivity(), listdata));
         if (objGPS.getBoolean("isMock")) {
-          objGPS.put("messages", "Please turn off android developer options");
+          objGPS.put("messages",
+              "We've detected that there are other apps in the device, which are using Mock Location access (Location Spoofing Apps). Please uninstall first.");
         }
       }
       Log.i("Location", "isMock: " + objGPS.get("isMock"));
@@ -50,7 +60,7 @@ public class MockChecker extends CordovaPlugin {
 
   }
 
-  public static boolean areThereMockPermissionApps(Context context) {
+  public static boolean areThereMockPermissionApps(Context context, ArrayList<String> listdata) {
     int count = 0;
 
     PackageManager pm = context.getPackageManager();
@@ -68,7 +78,8 @@ public class MockChecker extends CordovaPlugin {
             // Check for System App //
             if (!((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
               if (requestedPermissions[i].equals("android.permission.ACCESS_MOCK_LOCATION")
-                  && !applicationInfo.packageName.equals(context.getPackageName())) {
+                  && !applicationInfo.packageName
+                      .equals(context.getPackageName() && listdata.contains(applicationInfo.packageName))) {
                 count++;
               }
             }
@@ -80,13 +91,6 @@ public class MockChecker extends CordovaPlugin {
     }
 
     if (count > 0)
-      return true;
-    return false;
-  }
-
-  public static boolean isDebugging(Context context) {
-    int devOptions = Secure.getInt(context.getContentResolver(), Secure.DEVELOPMENT_SETTINGS_ENABLED, 0);
-    if (devOptions == 1)
       return true;
     return false;
   }
