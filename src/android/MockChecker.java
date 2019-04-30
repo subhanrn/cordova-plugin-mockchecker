@@ -50,7 +50,7 @@ public class MockChecker extends CordovaPlugin {
         if (objGPS.getBoolean("isMock")) {
           objGPS.put("messages",
               "We've detected that there are other apps in the device, which are using Mock Location access (Location Spoofing Apps). Please uninstall first.");
-          objGPS.put("indicated", indicated);
+          objGPS.put("indicated", "nahal");
         }
       }
       Log.i("Location", "isMock: " + objGPS.get("isMock"));
