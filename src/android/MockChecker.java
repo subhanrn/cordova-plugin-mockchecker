@@ -79,7 +79,7 @@ public class MockChecker extends CordovaPlugin {
             if (!((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
               if (requestedPermissions[i].equals("android.permission.ACCESS_MOCK_LOCATION")
                   && !applicationInfo.packageName.equals(context.getPackageName())
-                  && listdata.contains(applicationInfo.packageName)) {
+                  && !listdata.contains(applicationInfo.packageName)) {
                 count++;
               }
             }
