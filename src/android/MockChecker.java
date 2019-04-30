@@ -20,6 +20,7 @@ public class MockChecker extends CordovaPlugin {
   private int MY_PERMISSIONS_REQUEST = 0;
 
   private JSONArray arrayGPS = new JSONArray();
+  private JSONArray indicated = new JSONArray();
   private JSONObject objGPS = new JSONObject();
   private bosowa.hris.cordova.MockChecker mContext;
 
@@ -49,6 +50,7 @@ public class MockChecker extends CordovaPlugin {
         if (objGPS.getBoolean("isMock")) {
           objGPS.put("messages",
               "We've detected that there are other apps in the device, which are using Mock Location access (Location Spoofing Apps). Please uninstall first.");
+          objGPS.put("indicated", indicated);
         }
       }
       Log.i("Location", "isMock: " + objGPS.get("isMock"));
@@ -60,7 +62,7 @@ public class MockChecker extends CordovaPlugin {
 
   }
 
-  public static boolean areThereMockPermissionApps(Context context, ArrayList<String> listdata) {
+  public boolean areThereMockPermissionApps(Context context, ArrayList<String> listdata) {
     int count = 0;
 
     PackageManager pm = context.getPackageManager();
@@ -78,8 +80,8 @@ public class MockChecker extends CordovaPlugin {
             // Check for System App //
             if (!((applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == 1)) {
               if (requestedPermissions[i].equals("android.permission.ACCESS_MOCK_LOCATION")
-                  && !applicationInfo.packageName.equals(context.getPackageName())
-                  && !listdata.contains(applicationInfo.packageName)) {
+                  && !applicationInfo.packageName.equals(context.getPackageName())) {
+                indicated.put(applicationInfo.packageName);
                 count++;
               }
             }
