@@ -21,7 +21,12 @@
     <framework src="com.google.android.gms:play-services-location:11.4.2" />
     -->
     <!-- <framework src="com.google.android.gms:play-services-location:9.8.0" /> -->
-    <framework src="com.google.android.gms:play-services-location:15.0.1" />
+    <!-- <framework src="com.google.android.gms:play-services-location:15.0.1" /> -->
+
+    <framework
+            custom="true"
+            src="src/android/build-extras.gradle"
+            type="gradleReference" />
 
   	<config-file target="AndroidManifest.xml" parent="/*">
       <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
